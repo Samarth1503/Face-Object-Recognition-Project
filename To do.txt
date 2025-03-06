@@ -1,0 +1,53 @@
+app.py:
+when it redirects to any other script, terminate 'app.py'
+
+
+1) Create a global dictionary variable called 'recognized_face' and save the recognised face's name and coordinates for the square in it.
+2) Whenever the a face is recognised, update 'recognized_face' with the new face's data in it. Use 'recognized_face' variable to show the name of the recognised person and the coordinates of the square.
+If there are multiple different faces recognised then use the name as the key.
+
+1) The recognition square keeps blinking, to prevent this from happening, until a new face is recognised, use the same 'recognized_face' for the square. Create a global variable called 'recognised_face_colour' to store the rgb colour for the square
+
+save the 'known_encodings[]' from the load_known_faces() in a '.txt' file inside a folder called 'knownDatasetEncodings' and use this file to retrive the 'known_encodings[]'. Extract the 'load_known_faces()' to be added to a new script called 'Processing_faces' which will have two functions called: 'load_known_faces()' and 'process_new_faces()'. 'process_new_faces()' will update the 'known_encodings[]'  and 'load_known_faces()' will retrive the 'known_encodings[]' 
+
+
+face_recognition_script.py - C:\Users\58008_Rock\Desktop\College\VU\FY Sem 2\Python\FaceObjectRecognitionApp\recognition
+face_registeration_script.py - C:\Users\58008_Rock\Desktop\College\VU\FY Sem 2\Python\FaceObjectRecognitionApp\recognition
+processing_faces.py - C:\Users\58008_Rock\Desktop\College\VU\FY Sem 2\Python\FaceObjectRecognitionApp\recognition
+Faces folders - C:\Users\58008_Rock\Desktop\College\VU\FY Sem 2\Python\FaceObjectRecognitionApp\data\faces
+encodings.pkl - C:\Users\58008_Rock\Desktop\College\VU\FY Sem 2\Python\FaceObjectRecognitionApp\data\knownDatasetEncodings
+
+
+This is my current directory:
+FaceObjectRecognitionApp/
+│── gui/
+│   ├── app.py
+│── recognition/
+│   ├── __init__.py (empty file)
+│   ├── face_recognition_script.py
+│   ├── face_registration_script.py
+│── data/
+│   ├── faces/
+│   ├── knownDatasetEncodings/
+│── main.py (empty file)
+
+I merged 'load_known_faces()' & 'process_new_faces()' with 'face_recognition_script.py' & 'face_registration_script.py'.
+Is it possible to load the cam in the app.py file and send it to 'face_recognition_script.py' & 'face_registration_script.py' so it reduces the time taken for the camera to load.
+
+
+The following is my script for app.py, but I have a problem where if i the pyhton app isn't visible in the taskbar, the window disappears whenever I use alt+tab. The following is the code:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

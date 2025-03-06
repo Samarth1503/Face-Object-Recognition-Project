@@ -1,0 +1,39 @@
+python3.11 -m venv myenv
+
+myenv\Scripts\activate
+
+python.exe -m pip install --upgrade pip
+
+pip install opencv-contrib-python numpy
+
+pip install face_recognition dlib
+
+pip install opencv-python opencv-contrib-python 
+
+pip install mediapipe cmake dlib labelImg 
+
+pip install face_recognition git+https://github.com/ageitgey/face_recognition_models 
+
+pip install face_recognition_models 
+
+pip install numpy pillow tkinter 
+
+pip install torch torchvision scikit-learn
+
+pip install customtkinter
+
+pip install ttkbootstrap
+
+pip install dist/FaceObjectRecognitionApp-0.1.tar.gz
+
+
+
+python gui\app.py
+
+python recognition\face_recognition_script.py
+
+python recognition\face_registration_script.py
+
+
+
+

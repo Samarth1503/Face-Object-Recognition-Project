@@ -1,0 +1,432 @@
+# V0.1
+
+# import cv2
+# import numpy as np
+# import face_recognition
+# import os
+# import tkinter as tk
+# from tkinter import Label, Button
+# from PIL import Image, ImageTk
+# import subprocess
+
+
+# print("Starting GUI...")
+# # Load object recognition model
+# prototxt_path = "models/MobileNetSSD_deploy.prototxt"
+# model_path = "models/mobilenet_iter_73000.caffemodel"
+# net = cv2.dnn.readNetFromCaffe(prototxt_path, model_path)
+
+# # Class labels for object detection
+# CLASSES = ["background", "aeroplane", "bicycle", "bird", "boat", "bottle",
+#            "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse",
+#            "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
+
+# # Load known faces
+# FACES_DIR = "data/faces"
+# def load_known_faces():
+#     known_encodings = []
+#     known_names = []
+#     for folder_name in os.listdir(FACES_DIR):
+#         folder_path = os.path.join(FACES_DIR, folder_name)
+#         if os.path.isdir(folder_path):
+#             for filename in os.listdir(folder_path):
+#                 if filename.endswith(".jpg") or filename.endswith(".png"):
+#                     img_path = os.path.join(folder_path, filename)
+#                     image = face_recognition.load_image_file(img_path)
+#                     encoding = face_recognition.face_encodings(image)
+#                     if encoding:
+#                         known_encodings.append(encoding[0])
+#                         known_names.append(folder_name)  # Folder name represents the person's name
+#     return known_encodings, known_names
+
+# known_encodings, known_names = load_known_faces()
+
+# # Initialize Tkinter GUI
+# root = tk.Tk()
+# root.title("Face and Object Recognition App")
+# root.geometry("800x600")
+
+# video_label = Label(root)
+# video_label.pack()
+
+# result_label = Label(root, text="Recognition Results", font=("Arial", 14))
+# result_label.pack()
+
+# cap = cv2.VideoCapture(0)
+# running = False  # Flag to control video stream
+
+# def update_frame():
+#     if not running:
+#         return
+    
+#     ret, frame = cap.read()
+#     if not ret:
+#         return
+    
+#     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#     face_locations = face_recognition.face_locations(rgb_frame)
+#     face_encodings = face_recognition.face_encodings(rgb_frame, face_locations)
+    
+#     for face_encoding, (top, right, bottom, left) in zip(face_encodings, face_locations):
+#         matches = face_recognition.compare_faces(known_encodings, face_encoding)
+#         name = "Unknown"
+#         if True in matches:
+#             match_index = np.argmin(face_recognition.face_distance(known_encodings, face_encoding))
+#             name = known_names[match_index]
+#         cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)
+#         cv2.putText(frame, name, (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+    
+#     blob = cv2.dnn.blobFromImage(frame, 0.007843, (300, 300), 127.5)
+#     net.setInput(blob)
+#     detections = net.forward()
+#     h, w = frame.shape[:2]
+    
+#     for i in range(detections.shape[2]):
+#         confidence = detections[0, 0, i, 2]
+#         if confidence > 0.5:
+#             class_id = int(detections[0, 0, i, 1])
+#             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+#             (startX, startY, endX, endY) = box.astype("int")
+#             label = CLASSES[class_id]
+#             cv2.rectangle(frame, (startX, startY), (endX, endY), (255, 0, 0), 2)
+#             cv2.putText(frame, label, (startX, startY - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
+#             result_label.config(text=f"Detected: {label}")
+    
+#     img = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
+#     img = ImageTk.PhotoImage(img)
+#     video_label.imgtk = img
+#     video_label.config(image=img)
+#     root.after(10, update_frame)
+
+# def toggle_recognition():
+#     global running
+#     running = not running
+#     if running:
+#         start_button.config(text="Quit")
+#         update_frame()
+#     else:
+#         start_button.config(text="Start Recognition")
+#         result_label.config(text="Recognition Stopped")
+
+# def register_face():
+#     subprocess.run(["python", "recognition/face_registration_script.py"])  # Runs the face registration script
+
+# def on_closing():
+#     global running
+#     running = False
+#     cap.release()
+#     cv2.destroyAllWindows()
+#     root.destroy()
+
+# start_button = Button(root, text="Start Recognition", command=toggle_recognition)
+# start_button.pack()
+
+# register_button = Button(root, text="Register Face", command=register_face)
+# register_button.pack()
+
+# root.protocol("WM_DELETE_WINDOW", on_closing)
+# root.mainloop()
+
+
+
+
+
+
+
+
+
+
+
+
+
+# v0.2
+
+# import cv2
+# import numpy as np
+# import os
+# import tkinter as tk
+# from tkinter import Label, Button
+# from PIL import Image, ImageTk
+# import subprocess
+
+# # Load camera to be used for face registration & recognition
+# cap = cv2.VideoCapture(0)
+# if not cap.isOpened():
+#     print("[ERROR] Cannot open webcam.")
+#     exit()
+
+# # Initialize Tkinter GUI
+# root = tk.Tk()
+# root.title("Face and Object Recognition App")
+# root.geometry("800x600")
+
+# video_label = Label(root)
+# video_label.pack()
+
+# result_label = Label(root, text="Recognition Results", font=("Arial", 14))
+# result_label.pack()
+
+# def register_face():
+#     subprocess.run(["python", "recognition/face_registration_script.py", "0"])  # Run face registration script
+
+# def face_recognition_app():
+#     subprocess.run(["python", "recognition/face_recognition_script.py", "0"])  # Run face recognition script
+
+# def on_closing():
+#     global running
+#     running = False
+#     cap.release()
+#     cv2.destroyAllWindows()
+#     root.destroy()
+
+# face_recognition_button = Button(root, text="Face Recognition", command=face_recognition_app)
+# face_recognition_button.pack(pady=10)
+
+# register_button = Button(root, text="Register Face", command=register_face)
+# register_button.pack(pady=10)
+
+# root.protocol("WM_DELETE_WINDOW", on_closing)
+# root.mainloop()
+
+
+
+
+
+
+
+
+
+
+
+
+# v0.3
+
+# import sys
+# import cv2
+# import os
+# import tkinter as tk
+# from tkinter import Label
+# from PIL import Image, ImageTk
+# import subprocess
+# import customtkinter
+# import ttkbootstrap as ttk
+# from gui_layout import apply_gui_layout  # Import the gui function from gui_layout.py
+
+# # Load camera for face registration & recognition
+# cap = cv2.VideoCapture(0)
+# if not cap.isOpened():
+#     print("[ERROR] Cannot open webcam.")
+#     exit()
+
+# # Apply modern UI styling
+# title_label_text = "Face & Object Recognition App"
+# window_size = "600x400"
+# window_bg = "#000000"
+# font_style = ("Urbanist-Thin", 14)
+# button_bg = "#000000"  # Button background
+# button_fg = "#C8C8F2"  # Light purple text
+# button_border = "#C8C8F2"  # Light purple border
+# button_hover_bg = "#2a2633"  # Darker hover effect
+# title_bar_bg = "#1A1A1A"  # Title bar background color
+# title_bar_fg = "#C8C8F2"  # Title bar font color
+# title_bar_font_color = "#D0BCFF"  # Title bar font color
+# image_path = "C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/skull_2.png"  # Image at the bottom right
+
+# # Initialize Tkinter GUI with ttkbootstrap
+# root = ttk.Window(themename="darkly")
+
+# # Apply the GUI layout
+# title_bar, title_label = apply_gui_layout(
+#     root, title_label_text, window_size, window_bg, font_style,
+#     button_bg, button_fg, button_border, button_hover_bg,
+#     title_bar_bg, title_bar_fg, title_bar_font_color
+# )
+
+# # Add title text above buttons
+# title_label = Label(root, text="Face Recognition App", font=("Urbanist-Thin", 20), bg=window_bg, fg=title_bar_font_color)
+# title_label.pack(pady=(25, 25))  # Add margin at the top
+
+# # Function to create modern buttons
+# def create_button(text, command, pady):
+#     btn = customtkinter.CTkButton(
+#         root,
+#         text=text,
+#         command=command,
+#         font=font_style,
+#         fg_color=button_bg,
+#         text_color=button_fg,
+#         hover_color=button_hover_bg,
+#         border_color=button_border,
+#         border_width=1,
+#         corner_radius=10,  # Rounded corners
+#         width=200,
+#         height=50
+#     )
+#     btn.pack(pady=pady)  # Add vertical spacing
+#     return btn
+
+# def register_face():
+#     # Use the virtual environment's Python executable to run the script
+#     venv_python = os.path.join(os.path.dirname(sys.executable), 'python.exe')
+#     subprocess.run([venv_python, "recognition/face_registration_script.py", "0"])
+
+# def face_recognition_app():
+#     # Use the virtual environment's Python executable to run the script
+#     venv_python = os.path.join(os.path.dirname(sys.executable), 'python.exe')
+#     subprocess.run([venv_python, "recognition/face_recognition_script.py", "0"])
+
+# def on_closing():
+#     cap.release()
+#     cv2.destroyAllWindows()
+#     root.destroy()
+
+# # Create buttons with specified padding
+# register_button = create_button("Register Face", register_face, pady=(15, 15))
+# face_recognition_button = create_button("Recognize Face", face_recognition_app, pady=(0, 15))
+
+# # Image at the bottom right
+# image = Image.open(image_path)
+# image = image.resize((20, 20), Image.Resampling.LANCZOS)
+# image_tk = ImageTk.PhotoImage(image)
+
+# image_label = Label(root, image=image_tk, bg="#000000")
+# image_label.place(relx=1.0, rely=1.0, anchor='se')  # Place at bottom right
+
+# # Center the window on the screen
+# root.update_idletasks()
+# width = root.winfo_width()
+# height = root.winfo_height()
+# x = (root.winfo_screenwidth() // 2) - (width // 2)
+# y = (root.winfo_screenheight() // 2) - (height // 2)
+# root.geometry(f'{width}x{height}+{x}+{y}')
+
+# # Close event handling
+# root.protocol("WM_DELETE_WINDOW", on_closing)
+
+# # Run the GUI
+# root.mainloop()
+
+
+
+
+# # v_0.4
+
+# import sys
+# import cv2
+# import os
+# import tkinter as tk
+# from tkinter import Label
+# from PIL import Image, ImageTk
+# import subprocess
+# import customtkinter
+# import ttkbootstrap as ttk
+# from gui.gui_layout import *  # Import the gui functions from gui_layout.py
+
+# # Load camera for face registration & recognition
+# cap = cv2.VideoCapture(0)
+# if not cap.isOpened():
+#     print("[ERROR] Cannot open webcam.")
+#     exit()
+
+# # Apply modern UI styling
+# title_label_text = "Face & Object Recognition App"
+# window_size = "600x400"
+# window_bg = "#000000"
+# font_style = ("Urbanist-Thin", 14)
+# button_bg = "#000000"  # Button background
+# button_fg = "#C8C8F2"  # Light purple text
+# button_border = "#C8C8F2"  # Light purple border
+# button_hover_bg = "#2a2633"  # Darker hover effect
+# title_bar_bg = "#1A1A1A"  # Title bar background color
+# title_bar_fg = "#C8C8F2"  # Title bar font color
+# title_bar_font_color = "#D0BCFF"  # Title bar font color
+# image_path = "C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/skull_2.png"  # Image at the bottom right
+
+# # Initialize Tkinter GUI with ttkbootstrap
+# root = ttk.Window(themename="darkly")
+# root.resizable(True, True)  # Allow window resizing in both directions
+
+# # Ensure the window is visible in the taskbar
+# root.iconbitmap("")  # Ensure visibility in taskbar
+# root.attributes('-topmost', False)  # Allow normal window stacking
+# root.attributes('-toolwindow', False)  # Ensure it appears in the taskbar
+# root.attributes('-fullscreen', False)  # Prevent fullscreen lock
+# root.overrideredirect(False)  # Allow OS to manage the window
+
+# # Apply the GUI layout
+# title_bar, title_label = apply_gui_layout(
+#     root, title_label_text, window_size, window_bg, font_style,
+#     button_bg, button_fg, button_border, button_hover_bg,
+#     title_bar_bg, title_bar_fg, title_bar_font_color
+# )
+
+# # Add title text above buttons
+# main_text1 = customtkinter.CTkLabel(root, text="Face Recognition App", font=("Urbanist-Thin", 20), text_color=button_fg)
+# main_text1.pack(pady=(25, 25))  # Add margin at the top
+
+# def register_face():
+#     # Use the virtual environment's Python executable to run the script
+#     venv_python = os.path.join(os.path.dirname(sys.executable), 'python.exe')
+#     subprocess.run([venv_python, "recognition/face_registration_script.py", "0"])
+
+# def face_recognition_app():
+#     # Use the virtual environment's Python executable to run the script
+#     venv_python = os.path.join(os.path.dirname(sys.executable), 'python.exe')
+#     subprocess.run([venv_python, "recognition/face_recognition_script.py", "0"])
+
+# def minimize_window():
+#     root.overrideredirect(False)  # Temporarily disable custom title bar
+#     root.iconify()  # Minimize window
+#     root.after(10, lambda: root.overrideredirect(True))  # Restore when reopened
+
+# def on_closing():
+#     cap.release()
+#     cv2.destroyAllWindows()
+#     root.destroy()
+
+# # Create buttons with specified padding using custom_layout_create_button
+# register_button = custom_layout_create_button(root, "Register Face", register_face, font_style, button_bg, button_fg, button_hover_bg, button_border, pady=(15, 15))
+# face_recognition_button = custom_layout_create_button(root, "Recognize Face", face_recognition_app, font_style, button_bg, button_fg, button_hover_bg, button_border, pady=(0, 15))
+
+# # Image at the bottom right
+# image = Image.open(image_path)
+# image = image.resize((20, 20), Image.Resampling.LANCZOS)
+# image_tk = customtkinter.CTkImage(light_image=image, dark_image=image, size=(20, 20))
+
+# image_label = customtkinter.CTkLabel(root, image=image_tk, text="")
+# image_label.place(relx=1.0, rely=1.0, anchor='se', x=-10, y=-10)  # Place at bottom right
+
+# # Center the window on the screen
+# root.update_idletasks()
+# width = root.winfo_width()
+# height = root.winfo_height()
+# x = (root.winfo_screenwidth() // 2) - (width // 2)
+# y = (root.winfo_screenheight() // 2) - (height // 2)
+# root.geometry(f'{width}x{height}+{x}+{y}')
+
+# # Close event handling
+# root.protocol("WM_DELETE_WINDOW", on_closing)
+
+# # Run the GUI
+# root.mainloop()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
