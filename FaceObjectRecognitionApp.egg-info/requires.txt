@@ -1,0 +1,8 @@
+Pillow
+customtkinter
+ttkbootstrap
+opencv-python
+face_recognition
+dlib
+opencv-contrib-python
+numpy

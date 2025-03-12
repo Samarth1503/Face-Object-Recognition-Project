@@ -1,0 +1,1 @@
+python -m pip install opencv-python opencv-contrib-python mediapipe cmake dlib labelImg face_recognition git+https://github.com/ageitgey/face_recognition_models face_recognition_models numpy pillow tkinter torch torchvision scikit-learn

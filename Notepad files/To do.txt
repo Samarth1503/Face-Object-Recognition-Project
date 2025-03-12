@@ -1,0 +1,13 @@
+python3.10 -m venv face_recognition_env
+
+
+face_recognition_env\Scripts\activate 
+
+
+pip install numpy opencv-python dlib face-recognition torch torchvision tensorflow keras scikit-learn
+
+
+
+python face_registration_script.py
+
+python face_recognition.py
