@@ -1,4 +1,3 @@
-gui
 models
 recognition
 utils

@@ -1,8 +1,6 @@
-Pillow
+pillow
 customtkinter
 ttkbootstrap
-opencv-python
+opencv-python-headless
 face_recognition
-dlib
-opencv-contrib-python
 numpy

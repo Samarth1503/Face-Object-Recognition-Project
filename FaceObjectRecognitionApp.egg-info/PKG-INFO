@@ -1,20 +1,7 @@
-Metadata-Version: 2.2
+Metadata-Version: 2.1
 Name: FaceObjectRecognitionApp
-Version: 0.1
-Summary: A face and recognition application
-Home-page: https://github.com/Samarth1503/FaceObjectRecognitionApp
+Version: 0.2
+Summary: A face and object recognition application
+Home-page: https://github.com/Samarth1503/Face-Object-Recognition-Project
 Author: Samarth Birdawade
 Author-email: sammehta063@gmail.com
-Requires-Dist: Pillow
-Requires-Dist: customtkinter
-Requires-Dist: ttkbootstrap
-Requires-Dist: opencv-python
-Requires-Dist: face_recognition
-Requires-Dist: dlib
-Requires-Dist: opencv-contrib-python
-Requires-Dist: numpy
-Dynamic: author
-Dynamic: author-email
-Dynamic: home-page
-Dynamic: requires-dist
-Dynamic: summary

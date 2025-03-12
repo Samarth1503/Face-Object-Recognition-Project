@@ -4,7 +4,6 @@ FaceObjectRecognitionApp.egg-info/SOURCES.txt
 FaceObjectRecognitionApp.egg-info/dependency_links.txt
 FaceObjectRecognitionApp.egg-info/requires.txt
 FaceObjectRecognitionApp.egg-info/top_level.txt
-gui/__init__.py
 gui/app.py
 gui/gui_layout.py
 gui/test_gui_layout.py
@@ -15,7 +14,11 @@ recognition/face_recognition_script.py
 recognition/face_registration_script.py
 recognition/tf.py
 recognition/old_scripts/__init__.py
+recognition/old_scripts/app_old.py
 recognition/old_scripts/detection_code_image.py
+recognition/old_scripts/face_recognition_script_old.py
+recognition/old_scripts/face_registration_script_old.py
+recognition/old_scripts/gui_layout_old.py
 recognition/old_scripts/image_recognition.py
 recognition/old_scripts/object_recognition_script.py
 recognition/old_scripts/webcam_recognition.py

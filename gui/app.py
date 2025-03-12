@@ -6,12 +6,13 @@ import os
 import subprocess
 import customtkinter
 from tkinter import *
-from gui.gui_layout import *  # Import the gui functions from gui_layout.py
+from gui.gui_layout import *
 from ctypes import windll
 from PIL import Image, ImageTk
 
 # Retrieve theme colors from gui_layout.py
 (title_label_text, window_size, window_bg, button_bg, button_fg, button_border, button_hover_bg, title_bar_bg, title_bar_fg, main_text_fg, title_bar_close_button_hover, title_bar_button_hover, general_images_path) = retrive_theme_colors()
+(button2_bg, button2_hover_bg) = retrive_extra_theme_colors()
 
 # Global variables
 skull_image_path = os.path.join(general_images_path, "res/skull_2.png")
@@ -196,7 +197,7 @@ main_text1.pack(pady=(25, 25))  # Add margin at the top
 
 # Create buttons with specified padding using custom_layout_create_button
 register_button = custom_layout_create_button(root, "Register Face", register_face, font_style, button_bg, button_fg, button_hover_bg, button_border, pady=(15, 15))
-face_recognition_button = custom_layout_create_button(root, "Recognize Face", face_recognition_app, font_style, button_bg, button_fg, button_hover_bg, button_border, pady=(0, 15))
+face_recognition_button = custom_layout_create_button(root, "Recognize Face", face_recognition_app, font_style, button2_bg, button_fg, button2_hover_bg, button_border, pady=(0, 15))
 
 # Image at the bottom right
 image = Image.open(skull_image_path)
