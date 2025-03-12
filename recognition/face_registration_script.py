@@ -13,25 +13,14 @@ import ttkbootstrap as ttk
 from gui.gui_layout import *
 from PIL import Image
 
+# Retrieve theme colors from gui_layout.py
+(title_label_text, window_size, window_bg, button_bg, button_fg, button_border, button_hover_bg, title_bar_bg, title_bar_fg, main_text_fg, title_bar_close_button_hover, title_bar_button_hover, general_images_path) = retrive_theme_colors()
+
 # Constants
-FACES_DIR = "C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/data/faces"
-ENCODINGS_FILE = "C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/data/knownDatasetEncodings/encodings.pkl"
-IMAGE_PATH = "C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/skull_2.png"
+FACES_DIR = os.path.join(general_images_path,"data/faces")
+ENCODINGS_FILE = os.path.join(general_images_path,"data/knownDatasetEncodings/encodings.pkl")
 
 # GUI Styling Variables
-title_label_text = "Face & Object Recognition App"
-window_size = "600x400"
-window_bg = "#000000"
-font_style = ("Urbanist-Thin", 14)
-button_bg = "#000000"  # Button background
-button_fg = "#C8C8F2"  # Light purple text
-button_border = "#C8C8F2"  # Light purple border
-button_hover_bg = "#2a2633"  # Darker hover effect
-title_bar_bg = "#1A1A1A"  # Title bar background color
-title_bar_fg = "#C8C8F2"  # Title bar font color
-title_bar_font_color = "#D0BCFF"  # Title bar font color
-title_bar_close_button_hover = 'red'  # Red close button background color
-title_bar_button_hover = '#3e4042'
 name_label_text = "Enter your name:"
 name_label_font = ("Urbanist-Thin", 14)
 start_button_text = "Start Registration"
@@ -40,6 +29,13 @@ prompt_label_font = ("Urbanist-Thin", 12)
 prompt_label_fg = "aliceblue"
 video_label_text = "Face Registration App"
 video_label_font = ("Urbanist-Thin", 20)
+
+# Global variables
+skull_image_path = os.path.join(general_images_path, "res/skull_2.png")
+close_icon_path = os.path.join(general_images_path, "res/x.png")
+minimize_icon_path = os.path.join(general_images_path, "res/min.png")
+max_icon_path = os.path.join(general_images_path, "res/max.png")
+min_icon_path = os.path.join(general_images_path, "res/minus.png")
 
 # Get camera index from command-line arguments
 camera_index = int(sys.argv[1]) if len(sys.argv) > 1 else 0
@@ -303,16 +299,16 @@ root.maximized = False
 root.config(bg=window_bg)
 title_bar = Frame(root, bg=title_bar_bg, relief='raised', bd=0,highlightthickness=0)
 
-my_close_icon_src = Image.open("C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/x.png")
+my_close_icon_src = Image.open(close_icon_path)
 my_close_icon = ImageTk.PhotoImage(my_close_icon_src.resize((20, 20)))
 
-my_max_icon_src = Image.open("C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/max.png")
+my_max_icon_src = Image.open(max_icon_path)
 my_max_icon = ImageTk.PhotoImage(my_max_icon_src.resize((20, 20)))
 
-my_min_icon_src = Image.open("C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/minus.png")
+my_min_icon_src = Image.open(min_icon_path)
 my_min_icon = ImageTk.PhotoImage(my_min_icon_src.resize((20, 20)))
 
-my_minimise_icon_src = Image.open("C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/min.png")
+my_minimise_icon_src = Image.open(minimize_icon_path)
 my_minimise_icon = ImageTk.PhotoImage(my_minimise_icon_src.resize((20, 20)))
 
 Label(title_bar, bg=title_bar_bg).pack(side=LEFT, padx=5)
@@ -327,16 +323,16 @@ title_bar_title = customtkinter.CTkLabel(title_bar, text=title_label_text, font=
 
 # Add All the gui items
 title_bar.pack(fill=X)
-close_button.pack(side=RIGHT,   ipadx=14, ipady=10)
-expand_button.pack(side=RIGHT,  ipadx=14, ipady=10)
-minimize_button.pack(side=RIGHT,ipadx=14, ipady=10)
-title_bar_title.pack(side=TOP, pady=10, anchor="center")
+close_button.pack(side=RIGHT, ipadx=14, ipady=10)
+expand_button.pack(side=RIGHT, ipadx=14, ipady=10)
+minimize_button.pack(side=RIGHT, ipadx=14, ipady=10)
+title_bar_title.pack(side=TOP, pady=10, anchor="w")
 
 # Add title text above buttons
-main_text = customtkinter.CTkLabel(root, text=video_label_text, font=video_label_font, text_color=button_fg)
+main_text = customtkinter.CTkLabel(root, text=video_label_text, font=video_label_font, text_color=main_text_fg)
 main_text.pack(pady=(25, 25))
 
-name_label = customtkinter.CTkLabel(root, text=name_label_text, font=name_label_font, text_color=button_fg)
+name_label = customtkinter.CTkLabel(root, text=name_label_text, font=name_label_font, text_color=main_text_fg)
 name_label.pack(pady=10)
 
 name_entry = Entry(root, font=name_label_font)
@@ -344,7 +340,7 @@ name_entry.pack(pady=5)
 
 start_button = custom_layout_create_button(root, start_button_text, start_registration, font_style, button_bg, button_fg, button_hover_bg, button_border, pady=(15, 15))
 
-instruction_label = customtkinter.CTkLabel(root, text="", font=instruction_label_font, text_color=button_fg)
+instruction_label = customtkinter.CTkLabel(root, text="", font=instruction_label_font, text_color=main_text_fg)
 instruction_label.pack(pady=10)
 
 prompt_label = customtkinter.CTkLabel(root, text="", font=prompt_label_font, text_color=prompt_label_fg)
@@ -354,7 +350,7 @@ video_label = Label(root)
 video_label.pack()
 
 # Image at the bottom right
-image = Image.open(IMAGE_PATH)
+image = Image.open(skull_image_path)
 image = image.resize((20, 20), Image.Resampling.LANCZOS)
 image_tk = customtkinter.CTkImage(light_image=image, dark_image=image, size=(20, 20))
 

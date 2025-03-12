@@ -1,3 +1,143 @@
+# v_Working_0.8
+
+# import os
+# import sys
+# import cv2
+# import face_recognition
+# import numpy as np
+# import threading
+# import tkinter as tk
+# from tkinter import Label
+# from PIL import Image, ImageTk
+# import pickle
+
+# # Constants
+# PROCESS_EVERY_N_FRAMES = 1  # Process every frame
+# FACES_DIR = "C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/data/faces"
+# ENCODINGS_FILE = "C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/data/knownDatasetEncodings/encodings.pkl"
+
+# # Get camera index from command-line arguments
+# camera_index = int(sys.argv[1]) if len(sys.argv) > 1 else 0
+
+# # Function to load known face encodings and names
+# def load_known_faces():
+#     """Loads known face encodings and names from a file."""
+#     if not os.path.exists(ENCODINGS_FILE):
+#         print("[INFO] No saved encodings found. Returning empty lists.")
+#         return [], []
+    
+#     with open(ENCODINGS_FILE, "rb") as file:
+#         data = pickle.load(file)
+    
+#     print(f"[INFO] Loaded {len(data['encodings'])} known faces from file.")
+#     return data["encodings"], data["names"]
+
+
+# # Global variables
+# running = True
+# known_encodings, known_names = load_known_faces()
+# frame_count = 0
+# cap = None  # Single webcam instance
+# recognized_face = {}  # Stores recognized faces and their coordinates
+# recognized_face_colour = (188, 188, 242)  # Default color for face rectangle
+
+
+# # Face Recognition GUI
+# class FaceRecognitionApp:
+#     def __init__(self):
+#         global cap
+
+#         self.root = tk.Tk()
+#         self.root.title("Face Recognition")
+#         self.root.protocol("WM_DELETE_WINDOW", self.on_close)
+#         self.root.geometry("800x600")
+
+#         self.canvas = tk.Label(self.root)
+#         self.canvas.pack()
+
+#         cap = cv2.VideoCapture(camera_index, cv2.CAP_DSHOW)
+#         if not cap.isOpened():
+#             print("[ERROR] Cannot open webcam.")
+#             self.root.destroy()
+#             return
+
+#         cap.set(cv2.CAP_PROP_FPS, 30)
+#         cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+#         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+#         self.update_feed()
+
+#     def update_feed(self):
+#         global cap, frame_count
+
+#         if not cap.isOpened() or not running:
+#             return
+
+#         ret, frame = cap.read()
+#         if not ret:
+#             return
+
+#         frame_count += 1
+#         if frame_count % PROCESS_EVERY_N_FRAMES == 0:
+#             frame = self.recognize_faces(frame)
+
+#         self.update_frame(frame)
+#         self.root.after(10, self.update_feed)
+
+#     def recognize_faces(self, frame):
+#         global recognized_face, recognized_face_colour
+
+#         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+#         rgb_small_frame = cv2.cvtColor(small_frame, cv2.COLOR_BGR2RGB)
+
+#         face_locations = face_recognition.face_locations(rgb_small_frame, model='hog')
+#         face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+#         for encoding, (top, right, bottom, left) in zip(face_encodings, face_locations):
+#             matches = face_recognition.compare_faces(known_encodings, encoding, tolerance=0.4)
+#             name = "Unknown"
+
+#             if True in matches:
+#                 match_index = np.argmin(face_recognition.face_distance(known_encodings, encoding))
+#                 name = known_names[match_index]
+
+#             # Scale coordinates back to original size
+#             top, right, bottom, left = [v * 4 for v in (top, right, bottom, left)]
+            
+#             # Store recognized face data
+#             recognized_face[name] = {"coordinates": (left, top, right, bottom)}
+
+#             cv2.rectangle(frame, (left, top), (right, bottom), recognized_face_colour, 2)
+#             cv2.putText(frame, f"{name}", (left, top - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, recognized_face_colour, 2)
+
+#         return frame
+
+#     def update_frame(self, frame):
+#         frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+#         img = Image.fromarray(frame_rgb)
+#         img = img.resize((800, 600))
+#         img_tk = ImageTk.PhotoImage(image=img)
+
+#         self.canvas.img_tk = img_tk
+#         self.canvas.configure(image=img_tk)
+
+#     def on_close(self):
+#         global running, cap
+#         running = False
+#         if cap:
+#             cap.release()
+#         self.root.quit()
+
+#     def run(self):
+#         self.root.mainloop()
+
+# # Start the application
+# if __name__ == "__main__":
+#     app = FaceRecognitionApp()
+#     app.run()
+
+#     running = False
+#     print("[INFO] Application closed.")
 
 
 

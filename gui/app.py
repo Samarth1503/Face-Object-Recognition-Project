@@ -1,4 +1,4 @@
-# v_0.5 (Using Github solution)
+# v_0.5 
 
 import sys
 import cv2
@@ -10,22 +10,15 @@ from gui.gui_layout import *  # Import the gui functions from gui_layout.py
 from ctypes import windll
 from PIL import Image, ImageTk
 
-# Apply modern UI styling
-title_label_text = "Face & Object Recognition App"
-window_size = "600x400"
-window_bg = "#000000"
-font_style = ("Urbanist-Thin", 14)
-button_bg = "#000000"  # Button background
-button_fg = "#C8C8F2"  # Light purple text
-button_border = "#C8C8F2"  # Light purple border
-button_hover_bg = "#2a2633"  # Darker hover effect
-title_bar_bg = "#1A1A1A"  # Title bar background color
-title_bar_fg = "#C8C8F2"  # Title bar font color
-title_bar_font_color = "#D0BCFF"  # Title bar font color
-image_path = "C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/skull_2.png"  # Image at the bottom right
-title_bar_close_button_hover = 'red'  # Red close button background color
-title_bar_button_hover = '#3e4042'
+# Retrieve theme colors from gui_layout.py
+(title_label_text, window_size, window_bg, button_bg, button_fg, button_border, button_hover_bg, title_bar_bg, title_bar_fg, main_text_fg, title_bar_close_button_hover, title_bar_button_hover, general_images_path) = retrive_theme_colors()
 
+# Global variables
+skull_image_path = os.path.join(general_images_path, "res/skull_2.png")
+close_icon_path = os.path.join(general_images_path, "res/x.png")
+minimize_icon_path = os.path.join(general_images_path, "res/min.png")
+max_icon_path = os.path.join(general_images_path, "res/max.png")
+min_icon_path = os.path.join(general_images_path, "res/minus.png")
 
 # Load camera for face registration & recognition
 cap = cv2.VideoCapture(0)
@@ -168,18 +161,18 @@ root.minimized = False
 root.maximized = False 
 
 root.config(bg=window_bg)
-title_bar = Frame(root, bg=title_bar_bg, relief='raised', bd=0,highlightthickness=0)
+title_bar = Frame(root, bg=title_bar_bg, relief='raised', bd=0, highlightthickness=0)
 
-my_close_icon_src = Image.open("C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/x.png")
+my_close_icon_src = Image.open(close_icon_path)
 my_close_icon = ImageTk.PhotoImage(my_close_icon_src.resize((20, 20)))
 
-my_max_icon_src = Image.open("C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/max.png")
+my_max_icon_src = Image.open(max_icon_path)
 my_max_icon = ImageTk.PhotoImage(my_max_icon_src.resize((20, 20)))
 
-my_min_icon_src = Image.open("C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/minus.png")
+my_min_icon_src = Image.open(min_icon_path)
 my_min_icon = ImageTk.PhotoImage(my_min_icon_src.resize((20, 20)))
 
-my_minimise_icon_src = Image.open("C:/Users/58008_Rock/Desktop/College/VU/FY Sem 2/Python/FaceObjectRecognitionApp/fontsUsed/min.png")
+my_minimise_icon_src = Image.open(minimize_icon_path)
 my_minimise_icon = ImageTk.PhotoImage(my_minimise_icon_src.resize((20, 20)))
 
 Label(title_bar, bg=title_bar_bg).pack(side=LEFT, padx=5)
@@ -197,8 +190,8 @@ title_bar.pack(fill=X)
 close_button.pack(side=RIGHT,   ipadx=14, ipady=10)
 expand_button.pack(side=RIGHT,  ipadx=14, ipady=10)
 minimize_button.pack(side=RIGHT,ipadx=14, ipady=10)
-title_bar_title.pack(side=TOP, pady=10, anchor="center")
-main_text1 = customtkinter.CTkLabel(root, text="Face Recognition App", font=("Urbanist-Thin", 20), text_color=button_fg)
+title_bar_title.pack(side=TOP, pady=10, anchor="w")
+main_text1 = customtkinter.CTkLabel(root, text="Face Recognition App", font=("Urbanist-Thin", 20), text_color=main_text_fg)
 main_text1.pack(pady=(25, 25))  # Add margin at the top
 
 # Create buttons with specified padding using custom_layout_create_button
@@ -206,7 +199,7 @@ register_button = custom_layout_create_button(root, "Register Face", register_fa
 face_recognition_button = custom_layout_create_button(root, "Recognize Face", face_recognition_app, font_style, button_bg, button_fg, button_hover_bg, button_border, pady=(0, 15))
 
 # Image at the bottom right
-image = Image.open(image_path)
+image = Image.open(skull_image_path)
 image = image.resize((20, 20), Image.Resampling.LANCZOS)
 image_tk = customtkinter.CTkImage(light_image=image, dark_image=image, size=(20, 20))
 
